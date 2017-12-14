@@ -3,8 +3,6 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion 26
 
-
-
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 26
@@ -29,6 +27,9 @@ dependencies {
 
     implementation 'com.android.support:appcompat-v7:26.1.0'
 
+    implementation 'com.google.code.gson:gson:2.8.2'
+
+    implementation 'org.researchstack:backbone:1.1.2'
     //TODO: Remove dependency on skin
     implementation 'org.researchstack:skin:1.1.2'
     implementation 'org.apache.commons:commons-lang3:3.4'
@@ -38,3 +39,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 }
+
+//apply from: rootProject.file('release-bintray.gradle')

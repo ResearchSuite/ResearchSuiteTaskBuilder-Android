@@ -4,26 +4,29 @@
 ext {
   bintrayRepo = 'maven'
   bintrayName = POM_BINTRAY_NAME
+    userOrgName = 'org-researchsuite'
 
-  publishedGroupId = 'com.quangnguyen.manga'
-  libraryName = 'Manga'
+  publishedGroupId = 'org.researchsuite'
+  libraryName = 'rstb'
   artifact = POM_ARTIFACT_ID
   packagingType = POM_PACKAGING
 
   libraryDescription = POM_DESCRIPTION
 
-  siteUrl = 'https://github.com/quangctkm9207/multi-library-bintray'
-  gitUrl = 'https://github.com/quangctkm9207/multi-library-bintray.git'
+  siteUrl = 'https://github.com/ResearchSuite/ResearchSuiteTaskBuilder-Android'
+  gitUrl = 'https://github.com/ResearchSuite/ResearchSuiteTaskBuilder-Android.git'
 
   libraryVersion = POM_VERSION
 
-  developerId = 'quangctkm9207'
-  developerName = 'Quang Nguyen'
-  developerEmail = 'quangctkm9207@gmail.com'
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+  developerId = properties.getProperty("developer.id")
+  developerName = properties.getProperty("developer.name")
+  developerEmail = properties.getProperty("developer.email")
 
-  licenseName = 'MIT'
-  licenseUrl = 'https://github.com/quangctkm9207/multi-library-bintray/LICENSE'
-  allLicenses = ["MIT"]
+  licenseName = 'Apache-2.0'
+  licenseUrl = 'https://github.com/ResearchSuite/ResearchSuiteTaskBuilder-Android/LICENSE'
+  allLicenses = ["Apache-2.0"]
 }
 
 // Set up the Android Maven publication.
