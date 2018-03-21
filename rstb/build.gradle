@@ -40,4 +40,4 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 }
 
-//apply from: rootProject.file('release-bintray.gradle')
+apply from: rootProject.file('release-bintray.gradle')
