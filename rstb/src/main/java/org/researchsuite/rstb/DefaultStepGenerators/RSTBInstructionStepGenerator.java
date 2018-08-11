@@ -32,7 +32,7 @@ public class RSTBInstructionStepGenerator extends RSTBBaseStepGenerator {
         try {
             RSTBInstructionStepDescriptor stepDescriptor = helper.getGson().fromJson(jsonObject, RSTBInstructionStepDescriptor.class);
             String identifier = this.combineIdentifiers(stepDescriptor.identifier, identifierPrefix);
-            Step step = new InstructionStep(identifier, stepDescriptor.title, stepDescriptor.text);
+            Step step = new InstructionStep(identifier, helper.getLocalizationHelper().localizedString(stepDescriptor.title), helper.getLocalizationHelper().localizedString(stepDescriptor.text));
             return Collections.singletonList(step);
         }
         catch(Exception e) {

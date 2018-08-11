@@ -35,11 +35,11 @@ public abstract class RSTBQuestionStepGenerator extends RSTBBaseStepGenerator im
 
             String identifier = this.combineIdentifiers(questionStepDescriptor.identifier, identifierPrefix);
             Step questionStep = new QuestionStep(identifier,
-                    questionStepDescriptor.title,
+                    helper.getLocalizationHelper().localizedString(questionStepDescriptor.title),
                     answerFormat
             );
 
-            questionStep.setText(questionStepDescriptor.text);
+            questionStep.setText(helper.getLocalizationHelper().localizedString(questionStepDescriptor.text));
             questionStep.setOptional(questionStepDescriptor.optional);
 
             return Arrays.asList(questionStep);

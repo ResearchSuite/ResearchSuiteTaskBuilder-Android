@@ -35,8 +35,8 @@ public class RSTBPasscodeStepGenerator extends RSTBBaseStepGenerator {
 
         String identifier = this.combineIdentifiers(stepDescriptor.identifier, identifierPrefix);
         Step step = new PassCodeCreationStep(identifier, 0);
-        step.setTitle(stepDescriptor.title);
-        step.setText(stepDescriptor.text);
+        step.setTitle(helper.getLocalizationHelper().localizedString(stepDescriptor.title));
+        step.setText(helper.getLocalizationHelper().localizedString(stepDescriptor.text));
         return Collections.singletonList(step);
     }
 

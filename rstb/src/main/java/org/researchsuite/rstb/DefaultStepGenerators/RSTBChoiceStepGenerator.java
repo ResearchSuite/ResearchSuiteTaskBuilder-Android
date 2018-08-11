@@ -36,7 +36,7 @@ public abstract class RSTBChoiceStepGenerator extends RSTBQuestionStepGenerator 
 
     }
 
-    protected Choice[] generateChoices(List<RSTBChoiceStepItemDescriptor> items, boolean shuffleItems)
+    protected Choice[] generateChoices(RSTBTaskBuilderHelper helper, List<RSTBChoiceStepItemDescriptor> items, boolean shuffleItems)
     {
         Choice[] choices = new Choice[items.size()];
 
@@ -47,12 +47,12 @@ public abstract class RSTBChoiceStepGenerator extends RSTBQuestionStepGenerator 
             RSTBChoiceStepItemDescriptor choice = choiceItems.get(i);
             if(choice.value instanceof String)
             {
-                choices[i] = new Choice<>(choice.prompt, (String) choice.value);
+                choices[i] = new Choice<>(helper.getLocalizationHelper().localizedString(choice.prompt), (String) choice.value);
             }
             else if(choice.value instanceof Number)
             {
                 // if the field type is Object, gson turns all numbers into doubles. Assuming Integer
-                choices[i] = new Choice<>(choice.prompt, ((Number) choice.value).intValue());
+                choices[i] = new Choice<>(helper.getLocalizationHelper().localizedString(choice.prompt), ((Number) choice.value).intValue());
             }
             else
             {
@@ -80,7 +80,7 @@ public abstract class RSTBChoiceStepGenerator extends RSTBQuestionStepGenerator 
             }
         }
 
-        ChoiceAnswerFormat answerFormat = new ChoiceAnswerFormat(answerStyle, this.generateChoices(filteredItems, choiceStepDescriptor.shuffleItems));
+        ChoiceAnswerFormat answerFormat = new ChoiceAnswerFormat(answerStyle, this.generateChoices(helper, filteredItems, choiceStepDescriptor.shuffleItems));
 
         return answerFormat;
 

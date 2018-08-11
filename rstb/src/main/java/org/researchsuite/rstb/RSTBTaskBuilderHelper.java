@@ -19,6 +19,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 
 import org.researchsuite.rstb.DefaultStepGenerators.descriptors.RSTBCustomStepDescriptor;
+import org.researchsuite.rstb.Localization.RSTBLocalizationHelper;
 
 /**
  * Created by jameskizer on 12/8/16.
@@ -33,6 +34,12 @@ public class RSTBTaskBuilderHelper {
     private RSTBStateHelper stateHelper;
     private int defaultResourceType;
 
+    private RSTBLocalizationHelper localizationHelper;
+
+    public RSTBLocalizationHelper getLocalizationHelper() {
+        return localizationHelper;
+    }
+
     public int getDefaultResourceType() {
         return defaultResourceType;
     }
@@ -41,11 +48,11 @@ public class RSTBTaskBuilderHelper {
         this.defaultResourceType = defaultResourceType;
     }
 
-    public RSTBTaskBuilderHelper(Context context, RSTBResourcePathManager resourcePathManager, RSTBTaskBuilder taskBuilder, RSTBStateHelper stateHelper) {
-        this(context, resourcePathManager, new Gson(), taskBuilder, stateHelper);
+    public RSTBTaskBuilderHelper(Context context, RSTBResourcePathManager resourcePathManager, RSTBTaskBuilder taskBuilder, RSTBStateHelper stateHelper, @Nullable RSTBLocalizationHelper localizationHelper) {
+        this(context, resourcePathManager, new Gson(), taskBuilder, stateHelper, localizationHelper);
     }
 
-    public RSTBTaskBuilderHelper(Context context, RSTBResourcePathManager resourcePathManager, Gson gson, RSTBTaskBuilder taskBuilder, RSTBStateHelper stateHelper) {
+    public RSTBTaskBuilderHelper(Context context, RSTBResourcePathManager resourcePathManager, Gson gson, RSTBTaskBuilder taskBuilder, RSTBStateHelper stateHelper, @Nullable RSTBLocalizationHelper localizationHelper) {
         super();
         this.context = context;
         this.resourcePathManager = resourcePathManager;
@@ -54,6 +61,7 @@ public class RSTBTaskBuilderHelper {
         this.stateHelper = stateHelper;
         this.taskBuilder = taskBuilder;
         this.defaultResourceType = ResourcePathManager.Resource.TYPE_JSON;
+        this.localizationHelper = (localizationHelper != null) ? localizationHelper : new RSTBLocalizationHelper();
     }
 
     public Context getContext() {

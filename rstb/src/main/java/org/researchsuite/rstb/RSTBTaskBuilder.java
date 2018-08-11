@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.researchsuite.rstb.DefaultStepGenerators.descriptors.RSTBElementDescriptor;
+import org.researchsuite.rstb.Localization.RSTBLocalizationHelper;
 import org.researchsuite.rstb.RSTBConsent.RSTBConsentDocumentGeneratorService;
 import org.researchsuite.rstb.RSTBConsent.RSTBConsentSectionGeneratorService;
 import org.researchsuite.rstb.RSTBConsent.RSTBConsentSignatureGeneratorService;
@@ -58,6 +59,7 @@ public class RSTBTaskBuilder {
             Context context,
             RSTBResourcePathManager resourcePathManager,
             RSTBStateHelper stateHelper,
+            @Nullable RSTBLocalizationHelper localizationHelper,
             List<RSTBStepGenerator> stepGenerators,
             List<RSTBElementGenerator> elementGenerators,
             List<RSTBAnswerFormatGenerator> answerFormatGenerators,
@@ -70,6 +72,7 @@ public class RSTBTaskBuilder {
                 resourcePathManager,
                 new Gson(),
                 stateHelper,
+                localizationHelper,
                 stepGenerators,
                 elementGenerators,
                 answerFormatGenerators,
@@ -84,6 +87,7 @@ public class RSTBTaskBuilder {
             RSTBResourcePathManager resourcePathManager,
             Gson gson,
             RSTBStateHelper stateHelper,
+            @Nullable RSTBLocalizationHelper localizationHelper,
             List<RSTBStepGenerator> stepGenerators,
             List<RSTBElementGenerator> elementGenerators,
             List<RSTBAnswerFormatGenerator> answerFormatGenerators,
@@ -96,7 +100,8 @@ public class RSTBTaskBuilder {
                 resourcePathManager,
                 gson,
                 this,
-                stateHelper
+                stateHelper,
+                localizationHelper
         );
 
         this.stepGeneratorService = new RSTBStepGeneratorService(stepGenerators);

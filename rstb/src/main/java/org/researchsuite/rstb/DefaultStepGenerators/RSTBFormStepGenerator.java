@@ -60,7 +60,7 @@ public class RSTBFormStepGenerator extends RSTBBaseStepGenerator {
         }
 
         String identifier = this.combineIdentifiers(stepDescriptor.identifier, identifierPrefix);
-        FormStep step = new FormStep(identifier, stepDescriptor.title, stepDescriptor.text);
+        FormStep step = new FormStep(identifier, helper.getLocalizationHelper().localizedString(stepDescriptor.title), helper.getLocalizationHelper().localizedString(stepDescriptor.text));
         step.setFormSteps(formItems);
 
         return Collections.singletonList((Step)step);
