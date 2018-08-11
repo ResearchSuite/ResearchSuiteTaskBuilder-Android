@@ -11,8 +11,9 @@ import org.researchstack.backbone.step.Step;
 import java.util.Arrays;
 import java.util.List;
 
+import org.researchsuite.rstb.RSTBStateHelper;
+import org.researchsuite.rstb.RSTBStepGenerator;
 import org.researchsuite.rstb.RSTBTaskBuilderHelper;
-import org.researchsuite.rstb.RSTBStepGeneratorServiceProvider.spi.RSTBStepGenerator;
 
 /**
  * Created by jameskizer on 12/6/16.
@@ -29,13 +30,13 @@ public class RSTBDefaultStepGenerator implements RSTBStepGenerator {
         );
     }
 
-    public Step generateStep(RSTBTaskBuilderHelper helper, String type, JsonObject jsonObject) {
+    public List<Step> generateSteps(RSTBTaskBuilderHelper helper, String type, JsonObject jsonObject, String identifierPrefix) {
         try {
             String identifier = jsonObject.get("identifier").getAsString();
 
-            InstructionStep instructionStep;
+            Step instructionStep;
             instructionStep = new InstructionStep(identifier, identifier, type);
-            return instructionStep;
+            return Arrays.asList(instructionStep);
         }
         catch(Exception e) {
             Log.w(this.TAG, "malformed element: " + jsonObject.getAsString(), e);
@@ -43,19 +44,9 @@ public class RSTBDefaultStepGenerator implements RSTBStepGenerator {
         }
     }
 
-    @Nullable
-    @Override
-    public List<Step> generateSteps(RSTBTaskBuilderHelper helper, String type, JsonObject jsonObject) {
-        return null;
-    }
-
     public boolean supportsType(String type) {
         return this.supportedTypes.contains(type);
     }
 
-
-    public List<String> supportedStepTypes() {
-        return this.supportedTypes;
-    }
 }
 

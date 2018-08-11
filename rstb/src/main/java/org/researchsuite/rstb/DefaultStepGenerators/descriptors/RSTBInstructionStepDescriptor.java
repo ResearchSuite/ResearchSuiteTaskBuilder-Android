@@ -5,7 +5,7 @@ package org.researchsuite.rstb.DefaultStepGenerators.descriptors;
  */
 public class RSTBInstructionStepDescriptor extends RSTBStepDescriptor {
 
-    RSTBInstructionStepDescriptor() {
+    public RSTBInstructionStepDescriptor() {
 
     }
 

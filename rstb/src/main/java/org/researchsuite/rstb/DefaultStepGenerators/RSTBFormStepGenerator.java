@@ -11,6 +11,7 @@ import org.researchstack.backbone.step.Step;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.researchsuite.rstb.DefaultStepGenerators.descriptors.RSTBConsentReviewStepDescriptor;
@@ -34,7 +35,7 @@ public class RSTBFormStepGenerator extends RSTBBaseStepGenerator {
 
     @Nullable
     @Override
-    public Step generateStep(RSTBTaskBuilderHelper helper, String type, JsonObject jsonObject) {
+    public List<Step> generateSteps(RSTBTaskBuilderHelper helper, String type, JsonObject jsonObject, String identifierPrefix) {
 
         RSTBFormStepDescriptor stepDescriptor = helper.getGson().fromJson(jsonObject, RSTBFormStepDescriptor.class);
 
@@ -58,9 +59,10 @@ public class RSTBFormStepGenerator extends RSTBBaseStepGenerator {
             }
         }
 
-        FormStep step = new FormStep(stepDescriptor.identifier, stepDescriptor.title, stepDescriptor.text);
+        String identifier = this.combineIdentifiers(stepDescriptor.identifier, identifierPrefix);
+        FormStep step = new FormStep(identifier, stepDescriptor.title, stepDescriptor.text);
         step.setFormSteps(formItems);
 
-        return step;
+        return Collections.singletonList((Step)step);
     }
 }

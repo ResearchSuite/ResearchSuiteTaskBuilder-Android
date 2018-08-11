@@ -10,7 +10,9 @@ import org.researchsuite.rstb.DefaultStepGenerators.descriptors.RSTBElementDescr
 public class RSTBElementFileDescriptor extends RSTBElementDescriptor {
 
     public String elementFileName;
-    RSTBElementFileDescriptor() {
+    public String elementURLPath;
+    public String elementURLBaseKey = "configJSONBaseURL";
+    public RSTBElementFileDescriptor() {
 
     }
 

@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 
 import java.util.List;
 
-import org.researchsuite.rstb.RSTBElementGeneratorServiceProvider.spi.RSTBElementGenerator;
+import org.researchsuite.rstb.RSTBElementGenerator;
 import org.researchsuite.rstb.RSTBTaskBuilderHelper;
 
 /**

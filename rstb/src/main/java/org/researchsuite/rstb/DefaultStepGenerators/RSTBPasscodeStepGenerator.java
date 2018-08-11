@@ -9,6 +9,8 @@ import org.researchstack.backbone.step.Step;
 import org.researchstack.skin.step.PassCodeCreationStep;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.researchsuite.rstb.DefaultStepGenerators.descriptors.RSTBStepDescriptor;
 import org.researchsuite.rstb.RSTBTaskBuilderHelper;
@@ -28,12 +30,14 @@ public class RSTBPasscodeStepGenerator extends RSTBBaseStepGenerator {
     }
 
     @Override
-    public Step generateStep(RSTBTaskBuilderHelper helper, String type, JsonObject jsonObject) {
+    public List<Step> generateSteps(RSTBTaskBuilderHelper helper, String type, JsonObject jsonObject, String identifierPrefix) {
         RSTBStepDescriptor stepDescriptor = helper.getGson().fromJson(jsonObject, RSTBStepDescriptor.class);
-        Step step = new PassCodeCreationStep(stepDescriptor.identifier, 0);
+
+        String identifier = this.combineIdentifiers(stepDescriptor.identifier, identifierPrefix);
+        Step step = new PassCodeCreationStep(identifier, 0);
         step.setTitle(stepDescriptor.title);
         step.setText(stepDescriptor.text);
-        return step;
+        return Collections.singletonList(step);
     }
 
 }

@@ -1,4 +1,4 @@
-package org.researchsuite.rstb.RSTBElementGeneratorServiceProvider.spi;
+package org.researchsuite.rstb;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -13,5 +13,4 @@ import org.researchsuite.rstb.RSTBTaskBuilderHelper;
 public interface RSTBElementGenerator {
     JsonArray generateElements(RSTBTaskBuilderHelper helper, String type, JsonObject jsonObject);
     boolean supportsType(String type);
-    List<String> supportedStepTypes();
 }

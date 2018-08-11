@@ -12,7 +12,7 @@ public class RSTBElementSelectorDescriptor extends RSTBElementDescriptor {
 
     public JsonArray elements;
     public String selectorType;
-    RSTBElementSelectorDescriptor() {
+    public RSTBElementSelectorDescriptor() {
 
     }
 

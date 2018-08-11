@@ -43,7 +43,7 @@ public class RSTBVisualConsentStepGenerator extends RSTBBaseStepGenerator {
     }
 
     @Override
-    public List<Step> generateSteps(RSTBTaskBuilderHelper helper, String type, JsonObject jsonObject) {
+    public List<Step> generateSteps(RSTBTaskBuilderHelper helper, String type, JsonObject jsonObject, String identifierPrefix) {
 
         RSTBConsentReviewStepDescriptor stepDescriptor = helper.getGson().fromJson(jsonObject, RSTBConsentReviewStepDescriptor.class);
 
@@ -72,6 +72,8 @@ public class RSTBVisualConsentStepGenerator extends RSTBBaseStepGenerator {
 
         Context context = helper.getContext();
 
+        String identifier = this.combineIdentifiers(stepDescriptor.identifier, identifierPrefix);
+
         for (int i = 0, size = consentDocument.getSections().size(); i < size; i++) {
             ConsentSection section = consentDocument.getSections().get(i);
 
@@ -81,7 +83,7 @@ public class RSTBVisualConsentStepGenerator extends RSTBBaseStepGenerator {
 
             //this assumes that ConsentSection has their HTML set OR returns HTML based on their section content
 
-            ConsentVisualStep step = new ConsentVisualStep(stepDescriptor.identifier + "." + section.getTitle());
+            ConsentVisualStep step = new ConsentVisualStep(identifier + "." + section.getTitle());
             step.setSection(section);
 
             steps.add(step);

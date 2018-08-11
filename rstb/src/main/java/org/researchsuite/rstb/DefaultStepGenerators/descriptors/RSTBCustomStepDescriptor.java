@@ -12,7 +12,7 @@ public class RSTBCustomStepDescriptor extends RSTBStepDescriptor {
 
     public JsonObject parameters;
     public String parameterFileName;
-    RSTBCustomStepDescriptor() {
+    public RSTBCustomStepDescriptor() {
 
     }
 

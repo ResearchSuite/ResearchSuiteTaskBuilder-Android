@@ -10,7 +10,7 @@ public class RSTBTextFieldStepDescriptor extends RSTBQuestionStepDescriptor {
     public int maximumLength = TextAnswerFormat.UNLIMITED_LENGTH;
     public boolean multipleLines = false;
 
-    RSTBTextFieldStepDescriptor() {
+    public RSTBTextFieldStepDescriptor() {
 
     }
 

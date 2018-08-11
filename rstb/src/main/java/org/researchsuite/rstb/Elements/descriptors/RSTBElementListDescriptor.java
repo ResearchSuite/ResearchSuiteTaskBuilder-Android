@@ -12,7 +12,7 @@ public class RSTBElementListDescriptor extends RSTBElementDescriptor {
 
     public JsonArray elements;
     public boolean shuffleElements;
-    RSTBElementListDescriptor() {
+    public RSTBElementListDescriptor() {
 
     }
 

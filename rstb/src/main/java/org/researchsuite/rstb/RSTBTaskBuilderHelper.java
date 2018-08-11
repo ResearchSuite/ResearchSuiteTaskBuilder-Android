@@ -11,10 +11,12 @@ import com.google.gson.JsonParser;
 
 import org.researchstack.backbone.ResourcePathManager;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 
 import org.researchsuite.rstb.DefaultStepGenerators.descriptors.RSTBCustomStepDescriptor;
 
@@ -39,11 +41,15 @@ public class RSTBTaskBuilderHelper {
         this.defaultResourceType = defaultResourceType;
     }
 
-    RSTBTaskBuilderHelper(Context context, RSTBResourcePathManager resourcePathManager, RSTBTaskBuilder taskBuilder, RSTBStateHelper stateHelper) {
+    public RSTBTaskBuilderHelper(Context context, RSTBResourcePathManager resourcePathManager, RSTBTaskBuilder taskBuilder, RSTBStateHelper stateHelper) {
+        this(context, resourcePathManager, new Gson(), taskBuilder, stateHelper);
+    }
+
+    public RSTBTaskBuilderHelper(Context context, RSTBResourcePathManager resourcePathManager, Gson gson, RSTBTaskBuilder taskBuilder, RSTBStateHelper stateHelper) {
         super();
         this.context = context;
         this.resourcePathManager = resourcePathManager;
-        this.gson = new Gson();
+        this.gson = gson;
         this.jsonParser = new JsonParser();
         this.stateHelper = stateHelper;
         this.taskBuilder = taskBuilder;
@@ -91,6 +97,41 @@ public class RSTBTaskBuilderHelper {
             return null;
         }
         return element;
+    }
+
+    @Nullable
+    public JsonElement getJsonElementForURL(URL url) throws IOException {
+
+        InputStream stream;
+        if (url.toString().startsWith("file:///android_asset/")) {
+            String assetPath = url.toString().replace("file:///android_asset/", "");
+            stream = context.getAssets().open(assetPath);
+        }
+        else {
+            stream = url.openStream();
+        }
+
+        Reader reader = null;
+        try
+        {
+            reader = new InputStreamReader(stream, "UTF-8");
+        }
+        catch(UnsupportedEncodingException e)
+        {
+            throw new RuntimeException(e);
+        }
+
+        JsonElement element = null;
+        try {
+            element = this.jsonParser.parse(reader);
+            reader.close();
+        }
+        catch(Exception e) {
+            Log.w(this.getClass().getSimpleName(), "could not parse json element", e);
+            return null;
+        }
+        return element;
+
     }
 
     @Nullable

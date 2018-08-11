@@ -50,7 +50,7 @@ public class RSTBConsentReviewStepGenerator extends RSTBBaseStepGenerator {
 
 
     @Override
-    public List<Step> generateSteps(RSTBTaskBuilderHelper helper, String type, JsonObject jsonObject) {
+    public List<Step> generateSteps(RSTBTaskBuilderHelper helper, String type, JsonObject jsonObject, String identifierPrefix) {
 
         RSTBConsentReviewStepDescriptor stepDescriptor = helper.getGson().fromJson(jsonObject, RSTBConsentReviewStepDescriptor.class);
 
@@ -99,8 +99,9 @@ public class RSTBConsentReviewStepGenerator extends RSTBBaseStepGenerator {
 //        ConsentDocumentStep step = new ConsentDocumentStep(stepDescriptor.identifier + "." + ID_CONSENT_DOC);
 //        step.setConsentHTML(docBuilder.toString());
 
+        String identifier = this.combineIdentifiers(stepDescriptor.identifier, identifierPrefix);
         RSTBConsentDocumentStep step = new RSTBConsentDocumentStep(
-                stepDescriptor.identifier + "." + ID_CONSENT_DOC,
+                identifier + "." + ID_CONSENT_DOC,
                 consentDocument
         );
 
@@ -139,7 +140,7 @@ public class RSTBConsentReviewStepGenerator extends RSTBBaseStepGenerator {
             }
 
             String formTitle = context.getString(org.researchstack.backbone.R.string.rsb_consent_form_title);
-            FormStep formStep = new FormStep(stepDescriptor.identifier + "." + ID_FORM, formTitle, step.getText());
+            FormStep formStep = new FormStep(identifier + "." + ID_FORM, formTitle, step.getText());
             formStep.setStepTitle(org.researchstack.backbone.R.string.rsb_consent);
             formStep.setOptional(false);
             formStep.setFormSteps(formSteps);
@@ -150,7 +151,7 @@ public class RSTBConsentReviewStepGenerator extends RSTBBaseStepGenerator {
         // Add signature input
         if(participantSignature.requiresSignatureImage())
         {
-            ConsentSignatureStep signatureStep = new ConsentSignatureStep(stepDescriptor.identifier + "." + ID_SIGNATURE);
+            ConsentSignatureStep signatureStep = new ConsentSignatureStep(identifier + "." + ID_SIGNATURE);
             signatureStep.setStepTitle(org.researchstack.backbone.R.string.rsb_consent);
             signatureStep.setTitle(context.getString(org.researchstack.backbone.R.string.rsb_consent_signature_title));
             signatureStep.setText(context.getString(org.researchstack.backbone.R.string.rsb_consent_signature_instruction));

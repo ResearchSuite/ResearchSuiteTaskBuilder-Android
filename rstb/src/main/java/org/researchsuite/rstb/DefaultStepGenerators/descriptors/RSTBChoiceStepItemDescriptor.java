@@ -7,7 +7,7 @@ public class RSTBChoiceStepItemDescriptor {
 
     public String prompt;
     public Object value;
-    RSTBChoiceStepItemDescriptor() {
+    public RSTBChoiceStepItemDescriptor() {
 
     }
 

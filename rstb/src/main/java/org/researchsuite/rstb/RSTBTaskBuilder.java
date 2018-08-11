@@ -4,12 +4,14 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.researchstack.backbone.ResourcePathManager;
+import org.researchstack.backbone.answerformat.AnswerFormat;
 import org.researchstack.backbone.model.ConsentDocument;
 import org.researchstack.backbone.model.ConsentSection;
 import org.researchstack.backbone.model.ConsentSignature;
@@ -28,9 +30,6 @@ import org.researchsuite.rstb.RSTBConsent.RSTBConsentSignatureGeneratorService;
 import org.researchsuite.rstb.RSTBConsent.spi.RSTBConsentDocumentGenerator;
 import org.researchsuite.rstb.RSTBConsent.spi.RSTBConsentSectionGenerator;
 import org.researchsuite.rstb.RSTBConsent.spi.RSTBConsentSignatureGenerator;
-import org.researchsuite.rstb.RSTBElementGeneratorServiceProvider.RSTBElementGeneratorService;
-import org.researchsuite.rstb.RSTBStepGeneratorServiceProvider.RSTBStepGeneratorService;
-//import org.researchsuite.rstb.DefaultStepGenerators.descriptors.RSTBElementDescriptor;
 
 /**
  * Created by jameskizer on 12/6/16.
@@ -42,6 +41,15 @@ public class RSTBTaskBuilder {
     private RSTBTaskBuilderHelper stepBuilderHelper;
     private Context context;
 
+    private RSTBStepGeneratorService stepGeneratorService;
+
+    public RSTBStepGeneratorService getStepGeneratorService() {
+        return stepGeneratorService;
+    }
+
+    private RSTBElementGeneratorService elementGeneratorService;
+    private RSTBAnswerFormatGeneratorService answerFormatGeneratorService;
+
     private RSTBConsentDocumentGeneratorService consentDocumentGeneratorService;
     private RSTBConsentSectionGeneratorService consentSectionGeneratorService;
     private RSTBConsentSignatureGeneratorService consentSignatureGeneratorService;
@@ -50,14 +58,53 @@ public class RSTBTaskBuilder {
             Context context,
             RSTBResourcePathManager resourcePathManager,
             RSTBStateHelper stateHelper,
+            List<RSTBStepGenerator> stepGenerators,
+            List<RSTBElementGenerator> elementGenerators,
+            List<RSTBAnswerFormatGenerator> answerFormatGenerators,
             List<RSTBConsentDocumentGenerator> consentDocumentGenerators,
             List<RSTBConsentSectionGenerator> consentSectionGenerators,
-            List<RSTBConsentSignatureGenerator> conentSignatureGenerators
+            List<RSTBConsentSignatureGenerator> consentSignatureGenerators
     ) {
-        this.stepBuilderHelper = new RSTBTaskBuilderHelper(context, resourcePathManager, this, stateHelper);
+        this(
+                context,
+                resourcePathManager,
+                new Gson(),
+                stateHelper,
+                stepGenerators,
+                elementGenerators,
+                answerFormatGenerators,
+                consentDocumentGenerators,
+                consentSectionGenerators,
+                consentSignatureGenerators
+        );
+    }
+
+    public RSTBTaskBuilder(
+            Context context,
+            RSTBResourcePathManager resourcePathManager,
+            Gson gson,
+            RSTBStateHelper stateHelper,
+            List<RSTBStepGenerator> stepGenerators,
+            List<RSTBElementGenerator> elementGenerators,
+            List<RSTBAnswerFormatGenerator> answerFormatGenerators,
+            List<RSTBConsentDocumentGenerator> consentDocumentGenerators,
+            List<RSTBConsentSectionGenerator> consentSectionGenerators,
+            List<RSTBConsentSignatureGenerator> consentSignatureGenerators
+    ) {
+        this.stepBuilderHelper = new RSTBTaskBuilderHelper(
+                context,
+                resourcePathManager,
+                gson,
+                this,
+                stateHelper
+        );
+
+        this.stepGeneratorService = new RSTBStepGeneratorService(stepGenerators);
+        this.elementGeneratorService = new RSTBElementGeneratorService(elementGenerators);
+        this.answerFormatGeneratorService = new RSTBAnswerFormatGeneratorService(answerFormatGenerators);
         this.consentDocumentGeneratorService = new RSTBConsentDocumentGeneratorService(consentDocumentGenerators);
         this.consentSectionGeneratorService = new RSTBConsentSectionGeneratorService(consentSectionGenerators);
-        this.consentSignatureGeneratorService = new RSTBConsentSignatureGeneratorService(conentSignatureGenerators);
+        this.consentSignatureGeneratorService = new RSTBConsentSignatureGeneratorService(consentSignatureGenerators);
     }
 
     @Nullable
@@ -107,9 +154,9 @@ public class RSTBTaskBuilder {
             return null;
         }
 
-        if(RSTBElementGeneratorService.getInstance().supportsType(type)) {
+        if(this.elementGeneratorService.supportsType(type)) {
 
-            JsonArray elements = RSTBElementGeneratorService.getInstance().generateElements(this.stepBuilderHelper, type, element);
+            JsonArray elements = this.elementGeneratorService.generateElements(this.stepBuilderHelper, type, element);
             if (elements != null) {
                 return this.generateSteps(elements);
             }
@@ -163,10 +210,20 @@ public class RSTBTaskBuilder {
     }
 
     @Nullable
-    protected
+    public
     List<Step> createStepsForObject(String type, JsonObject jsonObject) {
-        RSTBStepGeneratorService stepGenerator = RSTBStepGeneratorService.getInstance();
-        return stepGenerator.generateSteps(this.stepBuilderHelper, type, jsonObject);
+        return this.stepGeneratorService.generateSteps(type, jsonObject, this.stepBuilderHelper, "");
+    }
+
+    @Nullable
+    public
+    List<Step> createStepsForObject(String type, JsonObject jsonObject, String identifierPrefix) {
+        return this.stepGeneratorService.generateSteps(type, jsonObject, this.stepBuilderHelper, identifierPrefix);
+    }
+
+    @Nullable
+    public AnswerFormat generateAnswerFormat(RSTBTaskBuilderHelper helper, String type, JsonObject jsonObject) {
+        return this.answerFormatGeneratorService.generateAnswerFormat(type, jsonObject, helper);
     }
 
 
